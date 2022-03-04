@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-export default function LoggedInStack() {
+export default function LoggedInTabStack() {
 
   return (
     <Tab.Navigator
