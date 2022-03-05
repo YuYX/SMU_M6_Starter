@@ -1,9 +1,20 @@
 
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity,LayoutAnimation, UIManager, ActivityIndicator, Keyboard } from 'react-native';
-import { API, API_LOGIN, API_SIGNUP } from '../constants/API';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import axios from "axios";
+import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  Keyboard,
+  LayoutAnimation,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  UIManager,
+  View,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
+import { logInAction } from "../redux/ducks/blogAuth";
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -20,6 +31,8 @@ export default function SignInSignUpScreen({ navigation }) {
 
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  const dispatch = useDispatch();
+
   async function login() {
     console.log("---- Login time ----");
     Keyboard.dismiss();
@@ -31,8 +44,8 @@ export default function SignInSignUpScreen({ navigation }) {
         password,
       });
       console.log("Success logging in!");
-      // console.log(response);
-      await AsyncStorage.setItem("token", response.data.access_token);
+      console.log(response.data.access_token);
+      dispatch({ ...logInAction(), payload: response.data.access_token });
       setLoading(false);
       setUsername("");
       setPassword("");
