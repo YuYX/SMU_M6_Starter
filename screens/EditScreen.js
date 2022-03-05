@@ -1,7 +1,15 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { 
+  StyleSheet, 
+  Text, 
+  TextInput,
+  View, 
+  TouchableOpacity, 
+ } from "react-native";
 import { useSelector } from "react-redux";
 import { commonStyles, darkStyles, lightStyles } from "../styles/commonStyles";
+import axios from "axios";
+import { API, API_POSTS } from "../constants/API";
 
 export default function EditScreen({ navigation, route }) {
 
@@ -10,6 +18,7 @@ export default function EditScreen({ navigation, route }) {
   
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const token = useSelector((state) => state.auth.token)
 
   useEffect(() => {
     const post = route.params.post
@@ -22,9 +31,12 @@ export default function EditScreen({ navigation, route }) {
       "title": title,
       "content": content,
     }
-    const token = await AsyncStorage.getItem("token");
+    //const token = await AsyncStorage.getItem("token");
+    
+      
     const id = route.params.post.id
     try {
+      
       console.log(token);
       const response = await axios.put(API + API_POSTS + "/" + id, post, {
         headers: { Authorization: `JWT ${token}` },
@@ -32,6 +44,7 @@ export default function EditScreen({ navigation, route }) {
       console.log(response.data)
       navigation.navigate("Index")
     } catch (error) {
+      console.log("??????????????EditScreen??????????????")
       console.log(error)
     }
   }
@@ -72,5 +85,5 @@ const additionalStyles = StyleSheet.create({
     fontSize: 28,
     marginBottom: 10,
     marginLeft: 5
-  }
+  },
 });

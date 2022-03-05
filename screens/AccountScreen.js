@@ -15,6 +15,7 @@ import { API, API_WHOAMI } from "../constants/API";
 import { useDispatch, useSelector } from "react-redux";
 import { changeModeAction } from '../redux/ducks/accountPref';
 import { logOutAction } from "../redux/ducks/blogAuth";
+
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
   
@@ -23,7 +24,7 @@ export default function AccountScreen({ navigation }) {
   const profilePicture = useSelector((state) => state.accountPref.profilePicture);
   const dispatch = useDispatch();
 
-  const picSize = new Animated.Value(200);
+  const picSize = new Animated.Value(0);
   const sizeInterpolation = {
     inputRange: [0, 0.5, 1],
     outputRange: [200, 300, 200]
@@ -65,10 +66,22 @@ export default function AccountScreen({ navigation }) {
   function changePicSize() {
     Animated.loop(
       Animated.timing(picSize, {
-        toValue: 300,
+        toValue: 1,
         duration: 2500,
         useNativeDriver: false
-      }),
+      })
+      /*Animated.sequence([
+        Animated.timing(picSize, {
+          toValue: 300,
+          duration: 2500,
+          useNativeDriver: false
+        }),
+        Animated.timing(picSize,{
+          toValue: 200,
+          duration: 2500,
+          useNativeDriver: false
+        })
+      ]) */
     ).start()
   }
 
@@ -86,15 +99,39 @@ export default function AccountScreen({ navigation }) {
   return (
     <View style={[styles.container, { alignItems: "center" }]}>
       <Text style={[styles.title, styles.text, { margin: 30 }]}> Hello {username} !</Text>
+      <View style={{
+        height: profilePicture == null ? 0 : 260,
+        justifyContent: "center",
+      }}>
       {profilePicture == null ? <View /> :
         <TouchableWithoutFeedback onPress={changePicSize}>
           <Animated.Image 
-            style={{ width: picSize, height: picSize, borderRadius: 200 }} 
+            style={{ 
+              width: picSize.interpolate(sizeInterpolation), 
+              height: picSize.interpolate(sizeInterpolation), 
+              borderRadius: 200,
+               }} 
             source={{ uri: profilePicture }} />
         </TouchableWithoutFeedback>
       }
-      <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
-          <Text style={{ marginTop: 10, fontSize: 20, color: "#0000EE" }}> No profile picture. Click to take one. </Text>
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate("Camera")}> 
+      { profilePicture == null ?  
+          <Text style={{ marginTop: 10, fontSize: 20, color: "#0000EE" }}> 
+          No profile picture. Click to take one.
+          </Text> 
+          :
+          <Text style={{ 
+            marginTop: 10, 
+            fontSize: 20, 
+            color: "#0000EE", 
+            textAlign: "center",
+            marginLeft: 50,
+            marginRight: 50,
+            }}> 
+          Wanna change profile picture? Click to take another one!
+          </Text> 
+      }
           </TouchableOpacity>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", margin: 20}}>
         <Text style={[styles.content, styles.text]}> Dark Mode? </Text>
