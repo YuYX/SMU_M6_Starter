@@ -5,7 +5,7 @@ import { commonStyles, darkStyles, lightStyles } from "../styles/commonStyles";
 
 export default function EditScreen({ navigation, route }) {
 
-  const isDark = useSelector((state) => state.accountPrefs.isDark);
+  const isDark = useSelector((state) => state.accountPref.isDark);
   const styles = { ...commonStyles, ...(isDark ? darkStyles : lightStyles) };
   
   const [title, setTitle] = useState("");
