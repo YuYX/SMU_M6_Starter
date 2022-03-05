@@ -1,14 +1,16 @@
-import React from 'react'
-import { createStackNavigator } from "@react-navigation/stack"; 
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import AccountScreen from "../screens/AccountScreen";
-import CameraScreen from '../screens/CameraScreen';
-import { lightStyles } from '../styles/commonStyles';
+import CameraScreen from "../screens/CameraScreen";
+import { darkStyles, lightStyles } from "../styles/commonStyles";
+import { useSelector } from "react-redux";
 
 const Stack = createStackNavigator();
 
 export default function AccountStack() {
 
-  const styles = lightStyles
+  const isDark = useSelector((state) => state.accountPref.isDark);
+  const styles = isDark ? darkStyles : lightStyles;
 
   return (
   <Stack.Navigator>

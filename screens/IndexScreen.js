@@ -10,14 +10,16 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import { API, API_POSTS } from "../constants/API";
-import { lightStyles } from "../styles/commonStyles";
+import { darkStyles, lightStyles } from "../styles/commonStyles";
 
 export default function IndexScreen({ navigation, route }) {
 
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const styles = lightStyles;
+  
   const token = useSelector((state) => state.auth.token);
+  const isDark = useSelector((state) => state.accountPref.isDark);
+  const styles = isDark ? darkStyles : lightStyles;
 
   // This is to set up the top right button
   useEffect(() => {
