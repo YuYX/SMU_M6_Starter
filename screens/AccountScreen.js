@@ -49,9 +49,7 @@ export default function AccountScreen({ navigation }) {
           signOut();
           navigation.navigate("SignInSignUp")
         }
-      } else {
-        console.log(error);
-      }
+      }  
       // We should probably go back to the login screen???
     }
   }

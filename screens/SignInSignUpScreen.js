@@ -1,4 +1,4 @@
-
+import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import React, { useState } from "react";
 import {
@@ -16,6 +16,7 @@ import {
 import { useDispatch } from "react-redux";
 import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
 import { logInAction } from "../redux/ducks/blogAuth";
+import * as LocalAuthentication from 'expo-local-authentication';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -26,13 +27,38 @@ export default function SignInSignUpScreen({ navigation }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const [errorText, setErrorText] = useState('')
+  const [errorText, setErrorText] = useState('') 
 
   const [isLogIn, setIsLogIn] = useState(true) 
 
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const dispatch = useDispatch();
+
+  async function authenticate() {
+    if (loading) {
+      return;
+    } 
+    setLoading(true);
+
+    try {
+      const results = await LocalAuthentication.authenticateAsync(); 
+
+      if (results.success) {  
+        setUsername("yuyx");
+        setPassword("12345678");  
+
+        console.log('SUCCESS');
+
+      } else{
+        console.log(results.error);
+      } 
+    } catch (error) {
+      console.log(error.description);
+    }
+
+    setLoading(false);
+  };
 
   async function login() {
     console.log("---- Login time ----");
@@ -88,13 +114,16 @@ export default function SignInSignUpScreen({ navigation }) {
         setErrorText(error.response.data.description);
       }
     }
-  }
+  } 
 
-  return (
+  function returnComponents()
+  {
+    return(
     <View style={styles.container}>
       <Text style={styles.title}>
         {isLogIn ? login : signUp}
-      </Text>
+      </Text> 
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.textInput}
@@ -134,6 +163,16 @@ export default function SignInSignUpScreen({ navigation }) {
           <Text style={styles.buttonText}> {isLogIn ? "Log In" : "Sign Up"} </Text>
           </TouchableOpacity>
           {loading ? <ActivityIndicator style={{ marginLeft: 10 }}/> : <View/>}
+
+          {isLogIn ?
+          <TouchableOpacity onPress={authenticate}   style={{ marginRight: 10 }}>
+          <Entypo
+            name="fingerprint"
+            size={60}
+            color={styles.headerTint} 
+          />
+        </TouchableOpacity> : null}
+
         </View>
       </View>
       <Text style={styles.errorText}>
@@ -154,7 +193,12 @@ export default function SignInSignUpScreen({ navigation }) {
           <Text style={styles.switchText}> {isLogIn ? "No account? Sign up now." : "Already have an account? Log in here."}</Text>
       </TouchableOpacity>
     </View>
-  );
+    )
+  } 
+
+  return (
+    returnComponents() 
+  )
 }
 
 const styles = StyleSheet.create({

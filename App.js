@@ -10,9 +10,13 @@ import SignInSignUpScreen from "./screens/SignInSignUpScreen";
 
 const Stack = createStackNavigator();
 
-function App() {
+function App() { 
+    
   const token = useSelector((state) => state.auth.token);
+  
   const isDark = useSelector((state)=> state.accountPref.isDark);
+    
+  console.log("App.js getting token...")
   console.log(token);
   return (
     <NavigationContainer>
@@ -25,6 +29,7 @@ function App() {
           headerMode: "none",
         }}
       > 
+      {/*<Stack.Screen component={BiometricAuthScreen} name="BiometricAuth" />*/}
       <Stack.Screen component={SignInSignUpScreen} name="SignInSignUp" />
       <Stack.Screen component={LoggedInTabStack} name="Logged In" />
       </Stack.Navigator>

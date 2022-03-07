@@ -13,7 +13,7 @@ import { API, API_POSTS } from "../constants/API";
 
 export default function EditScreen({ navigation, route }) {
 
-  const isDark = useSelector((state) => state.accountPref.isDark);
+  const isDark = useSelector((state) => state.accountPref.isDark); 
   const styles = { ...commonStyles, ...(isDark ? darkStyles : lightStyles) };
   
   const [title, setTitle] = useState("");
@@ -43,8 +43,7 @@ export default function EditScreen({ navigation, route }) {
       })
       console.log(response.data)
       navigation.navigate("Index")
-    } catch (error) {
-      console.log("??????????????EditScreen??????????????")
+    } catch (error) { 
       console.log(error)
     }
   }
@@ -54,13 +53,13 @@ export default function EditScreen({ navigation, route }) {
       <View style={{ margin: 20 }}>
         <Text style={[additionalStyles.label, styles.text]}>Enter Title:</Text>
         <TextInput
-          style={additionalStyles.input}
+          style={[additionalStyles.input]}
           value={title}
           onChangeText={text => setTitle(text)}
         />
         <Text style={[additionalStyles.label, styles.text]}>Enter Content:</Text>
         <TextInput
-          style={additionalStyles.input}
+          style={[additionalStyles.input]}
           value={content}
           onChangeText={text => setContent(text)}
         />
@@ -80,6 +79,7 @@ const additionalStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     marginBottom: 15,
+    color: 'black',
   },
   label: {
     fontSize: 28,
