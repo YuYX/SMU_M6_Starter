@@ -16,6 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeModeAction } from '../redux/ducks/accountPref';
 import { logOutAction } from "../redux/ducks/blogAuth";
 
+import * as ImagePicker from 'expo-image-picker';
+import { Entypo } from "@expo/vector-icons";
+import { uploadPicAction } from "../redux/ducks/accountPref";
+
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
   
@@ -59,6 +63,28 @@ export default function AccountScreen({ navigation }) {
   }
   function switchMode() {
     dispatch(changeModeAction())
+  }
+
+  async function chooseFromGallery(){
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if(permissionResult.granted == false)
+    {
+      alert("You are refused to allow this app to access your photos!")
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) { 
+      dispatch({ ...dispatch(uploadPicAction()), payload: result.uri }); 
+    } 
   }
 
   function changePicSize() {
@@ -113,7 +139,7 @@ export default function AccountScreen({ navigation }) {
         </TouchableWithoutFeedback>
       }
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("Camera")}> 
+      <TouchableOpacity  onPress={() => navigation.navigate("Camera")}> 
       { profilePicture == null ?  
           <Text style={{ marginTop: 10, fontSize: 20, color: "#0000EE" }}> 
           No profile picture. Click to take one.
@@ -130,7 +156,26 @@ export default function AccountScreen({ navigation }) {
           Wanna change profile picture? Click to take another one!
           </Text> 
       }
+      </TouchableOpacity>
+
+      <View style={{flexDirection: "row"}}>
+      <TouchableOpacity>
+          <Text style={{
+            fontSize: 20,
+            color: 'green',
+          }}>
+            Pick image from Gallery
+          </Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={chooseFromGallery} style={{marginLeft:10}}>
+          <Entypo
+            name="image"
+            size={30}
+            color={styles.headerTint}   
+          />
+        </TouchableOpacity> 
+        </View>
+
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", margin: 20}}>
         <Text style={[styles.content, styles.text]}> Dark Mode? </Text>
         <Switch
