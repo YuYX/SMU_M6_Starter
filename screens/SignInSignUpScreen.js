@@ -1,6 +1,6 @@
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ActivityIndicator,
   Keyboard,
@@ -32,33 +32,50 @@ export default function SignInSignUpScreen({ navigation }) {
   const [isLogIn, setIsLogIn] = useState(true) 
 
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [authpass, setAuthpass] = useState(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch();  
+
+  useEffect( () =>{
+    if(authpass == true)
+    {
+      login();
+    }
+  })
 
   async function authenticate() {
     if (loading) {
       return;
     } 
     setLoading(true);
-
-    try {
+ 
+    try{
       const results = await LocalAuthentication.authenticateAsync(); 
 
-      if (results.success) {  
-        setUsername("yuyx");
-        setPassword("12345678");  
+      if (results.success) {   
+  
+        console.log('SUCCESS');  
 
-        console.log('SUCCESS');
+        setUsername('yuyx');
+        setPassword('12345678');  
+        setAuthpass(true); 
+
+        console.log("Username:", {username});  
+        console.log("Password:", {password});  
 
       } else{
+        setAuthpass(false); 
         console.log(results.error);
-      } 
-    } catch (error) {
+      }  
+    }catch(error)
+    {
+      setAuthpass(false); 
+      setLoading(false);
       console.log(error.description);
     }
 
     setLoading(false);
-  };
+  };  
 
   async function login() {
     console.log("---- Login time ----");
@@ -160,18 +177,19 @@ export default function SignInSignUpScreen({ navigation }) {
       <View>
         <View style={{flexDirection: "row"}}>
           <TouchableOpacity style={styles.button} onPress={ isLogIn ? login : signUp}>
-          <Text style={styles.buttonText}> {isLogIn ? "Log In" : "Sign Up"} </Text>
+            <Text style={styles.buttonText}> {isLogIn ? "Log In" : "Sign Up"} </Text>
           </TouchableOpacity>
+
           {loading ? <ActivityIndicator style={{ marginLeft: 10 }}/> : <View/>}
 
           {isLogIn ?
           <TouchableOpacity onPress={authenticate}   style={{ marginRight: 10 }}>
-          <Entypo
-            name="fingerprint"
-            size={60}
-            color={styles.headerTint} 
-          />
-        </TouchableOpacity> : null}
+            <Entypo
+              name="fingerprint"
+              size={60}
+              color={styles.headerTint} 
+            /> 
+          </TouchableOpacity> : null}
 
         </View>
       </View>

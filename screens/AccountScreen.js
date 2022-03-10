@@ -120,6 +120,7 @@ export default function AccountScreen({ navigation }) {
     getUsername();
     return removeListener;
   }, []);
+  
   return (
     <View style={[styles.container, { alignItems: "center" }]}>
       <Text style={[styles.title, styles.text, { margin: 30 }]}> Hello {username} !</Text>
