@@ -16,7 +16,8 @@ export default function CameraScreen({ navigation }) {
   const cameraRef = useRef(null);
 
   async function showCamera() {
-    const { status } = await Camera.requestPermissionsAsync();
+    console.log("show Camera...")
+    const { status } = await Camera.requestPermissionsAsync(); 
     setHasPermission(status === "granted");
     if (hasPermission === false) {
       Alert.alert("Error: No access given");
@@ -28,6 +29,7 @@ export default function CameraScreen({ navigation }) {
   }
 
   async function takePicture() {
+    console.log("take Picture...")
     const photo = await cameraRef.current.takePictureAsync();
     // console.log(photo)
     console.log(photo);

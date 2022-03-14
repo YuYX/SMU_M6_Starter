@@ -24,6 +24,11 @@ function App() {
       <Stack.Navigator
           initialRouteName={token != null ? "Logged In" : "SignInSignUp"}
           animationEnabled={false}
+        
+        //YUYX
+        //Passing a 'screenOptions' prop to specify the same options for all of the screens 
+        //in the navigator.
+        //Otherwise just using the prop of 'options'.
         screenOptions={{
           headerShown: false,
           headerMode: "none",

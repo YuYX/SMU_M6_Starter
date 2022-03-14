@@ -40,6 +40,7 @@ export default function SignInSignUpScreen({ navigation }) {
     if(authpass == true)
     {
       login();
+      setAuthpass(false)
     }
   })
 

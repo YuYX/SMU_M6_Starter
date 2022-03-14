@@ -55,7 +55,7 @@ export const darkStyles = {
   },
   header: {
     backgroundColor: "#444444",
-    height: 100,
+    height: 60,
     shadowColor: "black",
     shadowOpacity: 0.2,
     shadowRadius: 5,
