@@ -139,7 +139,7 @@ export default function SignInSignUpScreen({ navigation }) {
     return(
     <View style={styles.container}>
       <Text style={styles.title}>
-        {isLogIn ? login : signUp}
+        {isLogIn ? 'login' : 'signUp'}
       </Text> 
 
       <View style={styles.inputView}>
