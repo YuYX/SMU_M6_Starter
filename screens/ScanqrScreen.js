@@ -7,10 +7,20 @@ import {
      } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export default function ScanqrScreen() {
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { uploadMacAction } from '../redux/ducks/accountPref'; 
+
+export default function ScanqrScreen({ navigation }) {
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState('');   
+  
+  const token = useSelector((state) => state.auth.token); 
+  const macAddress = useSelector((state) => state.accountPref.macAddress);
+  
+  const dispatch = useDispatch(); 
 
   useEffect(() => {
     (async () => {
@@ -22,7 +32,11 @@ export default function ScanqrScreen() {
   const handleBarCodeScanned = ({ type, data }) => {
     setContent(data);
     setScanned(true);
+ 
+    dispatch({ ...dispatch(uploadMacAction()), payload: data });
+
     console.log({data});
+    navigation.navigate("Add");
   };
 
   if (hasPermission === null) {

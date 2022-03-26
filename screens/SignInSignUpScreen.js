@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   UIManager,
   View,
+  Image,
   Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
@@ -138,6 +139,8 @@ export default function SignInSignUpScreen({ navigation }) {
   {
     return(
     <View style={styles.container}>
+      <Image source= { require("../assets/avire-logo.png") }/>
+
       <Text style={styles.title}>
         {isLogIn ? 'login' : 'signUp'}
       </Text> 
@@ -233,13 +236,14 @@ const styles = StyleSheet.create({
     margin: 20
   },
   switchText: {
+    color: 'blue',
     fontWeight: '400',
     fontSize: 20, 
     marginTop: 20
   },
   inputView: {
-    backgroundColor: "#FFC0CB",
-    borderRadius: 30,
+    backgroundColor: "#CCF0CB",
+    borderRadius: 10,
     width: "70%",
     height: 45,
     marginBottom: 20,
@@ -251,8 +255,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: 'blue',
-    borderRadius: 25,
+    backgroundColor: "rgb(112,146,190)",
+    borderRadius: 10,
   },
   buttonText: {
     fontWeight: '400',

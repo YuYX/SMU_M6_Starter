@@ -1,14 +1,23 @@
 import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
+import { 
+    Text, 
+    TouchableOpacity, 
+    Animated,
+    TouchableWithoutFeedback,
+    View } from "react-native";
+import { useSelector } from "react-redux"; 
 import { API, API_POSTS } from "../constants/API";
+
+
 import { commonStyles, lightStyles, darkStyles } from "../styles/commonStyles";
 
 export default function ShowScreen({ navigation, route }) {
 
   const [post, setPost] = useState({title: "", content: ""});
+  
+  const profilePicture = useSelector((state) => state.accountPref.profilePicture);
 
   const token = useSelector((state) => state.auth.token);
   const isDark = useSelector((state) => state.accountPref.isDark);
@@ -51,13 +60,32 @@ export default function ShowScreen({ navigation, route }) {
   }
 
   function editPost() {
-    navigation.navigate("Edit", { post: post })
+    //navigation.navigate("Edit", { post: post })
+    navigation.navigate("Add", {post: post})
   }
   
   return (
     <View style={styles.container}>
        <Text style={[styles.title, styles.text, { margin: 40 }]}>{post.title}</Text>
       <Text style={[styles.content, styles.text, { margin: 20 }]}>{post.content}</Text>
-    </View>
+
+      <View style={{
+        height: profilePicture == null ? 0 : 260,
+        justifyContent: "center",
+      }}>
+      {profilePicture == null ? <View /> :
+        <TouchableWithoutFeedback>
+          <Animated.Image 
+            style={{ 
+              width: 200, 
+              height: 200,  
+              marginLeft: 50,
+               }} 
+            source={{ uri: profilePicture }} />
+        </TouchableWithoutFeedback>
+      }
+      </View>
+
+    </View> 
   );
 }

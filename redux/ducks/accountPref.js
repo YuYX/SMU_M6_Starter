@@ -3,10 +3,12 @@ export const DARK_MODE = "dark_mode";
 export const UPLOAD_PIC = "upload_pic";
 export const DELETE_PIC = "delete_pic";
 export const CHANGE_MODE = "change_mode";
+export const UPLOAD_MAC = "upload_mac";
 
 const initialState = {
     isDark : false,
     profilePicture: null,
+    macAddress: "",
 };
 
 export function lightModeAction() {
@@ -33,6 +35,10 @@ export function deletePicAction(){
     return { type: DELETE_PIC };
 };
 
+export function uploadMacAction(){
+    return { type: UPLOAD_MAC };
+}
+
 export default function accountPrefReducer(state = initialState, action){
     switch (action.type){
         case LIGHT_MODE:
@@ -45,6 +51,8 @@ export default function accountPrefReducer(state = initialState, action){
             return { ...state, profilePicture: action.payload };
         case DELETE_PIC:
             return { ...state, profilePicture: null };
+        case UPLOAD_MAC:
+            return { ...state, macAddress: action.payload };
         default:
             return state;
     }

@@ -93,19 +93,7 @@ export default function AccountScreen({ navigation }) {
         toValue: 1,
         duration: 2500,
         useNativeDriver: false
-      })
-      /*Animated.sequence([
-        Animated.timing(picSize, {
-          toValue: 300,
-          duration: 2500,
-          useNativeDriver: false
-        }),
-        Animated.timing(picSize,{
-          toValue: 200,
-          duration: 2500,
-          useNativeDriver: false
-        })
-      ]) */
+      }) 
     ).start()
   }
 

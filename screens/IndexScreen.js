@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
 import { API, API_POSTS } from "../constants/API";
 import { darkStyles, lightStyles } from "../styles/commonStyles";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logOutAction } from "../redux/ducks/blogAuth"; 
 
 export default function IndexScreen({ navigation, route }) {
 
@@ -19,17 +21,26 @@ export default function IndexScreen({ navigation, route }) {
   
   const token = useSelector((state) => state.auth.token);
   const isDark = useSelector((state) => state.accountPref.isDark);
+
   const styles = isDark ? darkStyles : lightStyles;
+  
+  const dispatch = useDispatch();
+
+  function signOut() {
+    dispatch(logOutAction())
+    navigation.navigate("SignInSignUp");
+  }
 
   // This is to set up the top right button
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={addPost}>        
+        <TouchableOpacity onPress={signOut}>  
+        <Text style={{color: "blue", marginRight: 5}}>Sign Out</Text>      
         <FontAwesome
-            name="plus"
+            name="sign-out"
             size={24}
-            style={{ color: styles.headerTint, marginRight: 15 }}
+            style={{ color: styles.headerTint, marginRight: 10 }}
           />
         </TouchableOpacity>
       ),
@@ -57,7 +68,9 @@ export default function IndexScreen({ navigation, route }) {
       const response = await axios.get(API + API_POSTS, {
         headers: { Authorization: `JWT ${token}` },
       });
+      console.log("getPosts Result:");
       console.log(response.data);
+      console.log("getPosts Result.....END");
       setPosts(response.data);
       return "completed";
     } catch (error) {

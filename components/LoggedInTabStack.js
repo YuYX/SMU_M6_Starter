@@ -22,7 +22,7 @@ export default function LoggedInTabStack() {
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
-          if (route.name === 'Device List') {
+          if (route.name === 'Device') {
             iconName = "desktop"
           } else if (route.name === 'Settings') {
             iconName = "cog"
@@ -34,9 +34,9 @@ export default function LoggedInTabStack() {
         },
       })}
     >
-        <Tab.Screen name="Device List" component={BlogStack} />
+        <Tab.Screen name="Device" component={BlogStack} />
         <Tab.Screen name="Scan" component={ScanStack} />
-        <Tab.Screen name="Settings" component={AccountStack} />
+        {/*<Tab.Screen name="Settings" component={AccountStack} />*/}
       </Tab.Navigator>
   )
 } 
