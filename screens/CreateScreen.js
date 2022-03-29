@@ -32,18 +32,32 @@ export default function CreateScreen({ navigation }) {
   const styles = { ...commonStyles, ...(isDark ? darkStyles : lightStyles) };
 
   //const dispatch = useDispatch();
-  console.log("MAC Adress read:", { macAddress });
+  console.log("MAC Address read:", { macAddress });
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");   
   const [posts, setPosts] = useState([]);
   const [registered, setRegistered] = useState(false);
   const [registeredID, setRegisteredID] = useState(0);
+  const [base64image, setBase64image] = useState("");
+
+
+  // useEffect(() => {
+  //   const post = route.params.post
+  //   console.log("The post carried on: ", {post});
+  //   setTitle(post.title);
+  //   setContent(post.content);
+  // }, [])
 
   // In order to check whether this MAC Address is already registered,
   // Need to search MAC address from all the exiting post.
   // If this MAC is not registered, use CREATE method,
   // If this MAC is registered already, use UPDATE method.
+  //
+  // I think this should be done on server side, imagining if the 
+  // number of posts in the data base are big enough. 
+  // I will explore how to implement this in Flask_app.py code.
+  // 
   useEffect(() => {
     getPosts();
   }, []);
@@ -102,16 +116,22 @@ export default function CreateScreen({ navigation }) {
       return;
     }
 
+    // The only parameter 'options' in calling launchImageLibraryAsync(options) should
+    // include 'includeBase64' in order to upload the image to Flask/SQLite in the 
+    // form of Base64 string.
+    //
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      includeBase64: 1,
     });
 
     console.log(result);
 
-    if (!result.cancelled) { 
+    if (!result.cancelled) {  
+      setBase64image (result.base64);
       dispatch({ ...dispatch(uploadPicAction()), payload: result.uri }); 
     } 
   }  
@@ -135,6 +155,7 @@ export default function CreateScreen({ navigation }) {
     const post = {
       title: macAddress,
       content: content,
+      image: base64image,
     };
      
     try {
@@ -153,6 +174,7 @@ export default function CreateScreen({ navigation }) {
     const post = {
       "title": macAddress,
       "content": content,
+      "image": base64image,
     } 
       
     const id = registeredID;
@@ -213,17 +235,17 @@ export default function CreateScreen({ navigation }) {
         <View style={{
         height: profilePicture == null ? 0 : 260,
         justifyContent: "center",
-      }}>
-      {profilePicture == null ? <View /> :
-        <TouchableWithoutFeedback>
-          <Animated.Image 
-            style={{ 
-              width: 200, 
-              height: 200,  
-               }} 
-            source={{ uri: profilePicture }} />
-        </TouchableWithoutFeedback>
-      }
+        }}>
+        {profilePicture == null ? <View /> :
+          <TouchableWithoutFeedback>
+            <Animated.Image 
+              style={{ 
+                width: 200, 
+                height: 200,  
+                }} 
+              source={{ uri: profilePicture }} />
+          </TouchableWithoutFeedback>
+        }
       </View>
 
         <TouchableOpacity

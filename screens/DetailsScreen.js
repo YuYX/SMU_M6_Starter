@@ -60,13 +60,13 @@ export default function ShowScreen({ navigation, route }) {
   }
 
   function editPost() {
-    //navigation.navigate("Edit", { post: post })
-    navigation.navigate("Add", {post: post})
+    navigation.navigate("Edit", { post: post }) 
+    //navigation.navigate("Add", {post: post})
   }
   
   return (
     <View style={styles.container}>
-       <Text style={[styles.title, styles.text, { margin: 40 }]}>{post.title}</Text>
+      <Text style={[styles.title, styles.text, { margin: 40 }]}>{post.title}</Text>
       <Text style={[styles.content, styles.text, { margin: 20 }]}>{post.content}</Text>
 
       <View style={{

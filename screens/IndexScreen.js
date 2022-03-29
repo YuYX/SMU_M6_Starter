@@ -22,6 +22,8 @@ export default function IndexScreen({ navigation, route }) {
   const token = useSelector((state) => state.auth.token);
   const isDark = useSelector((state) => state.accountPref.isDark);
 
+  
+
   const styles = isDark ? darkStyles : lightStyles;
   
   const dispatch = useDispatch();
@@ -105,10 +107,15 @@ export default function IndexScreen({ navigation, route }) {
     } 
   }
 
+  function selectPost(id){
+    navigation.navigate("Details", {id: id});
+  }
+
   // The function to render each row in our FlatList
   function renderItem({ item }) {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("Details", {id: item.id})}>
+      // <TouchableOpacity onPress={() => navigation.navigate("Details", {id: item.id})}>
+      <TouchableOpacity onPress={ () => selectPost( item.id ) }>
         <View
           style={{
             padding: 10,
