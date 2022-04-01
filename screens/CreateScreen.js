@@ -155,7 +155,7 @@ export default function CreateScreen({ navigation }) {
     const post = {
       title: macAddress,
       content: content,
-      image: base64image,
+      // image: base64image,
     };
      
     try {
@@ -174,7 +174,7 @@ export default function CreateScreen({ navigation }) {
     const post = {
       "title": macAddress,
       "content": content,
-      "image": base64image,
+      // "image": base64image,
     } 
       
     const id = registeredID;

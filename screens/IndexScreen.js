@@ -41,10 +41,10 @@ export default function IndexScreen({ navigation, route }) {
         <Text style={{color: "blue", marginRight: 5}}>Sign Out</Text>      
         <FontAwesome
             name="sign-out"
-            size={24}
-            style={{ color: styles.headerTint, marginRight: 10 }}
-          />
-        </TouchableOpacity>
+            size={30}
+            style={{ color: styles.headerTint, marginRight: 5 }}
+          /> 
+        </TouchableOpacity> 
       ),
     });
   });

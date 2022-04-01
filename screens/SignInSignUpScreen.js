@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
 import { logInAction } from "../redux/ducks/blogAuth";
 import * as LocalAuthentication from 'expo-local-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -37,11 +38,15 @@ export default function SignInSignUpScreen({ navigation }) {
 
   const dispatch = useDispatch();  
 
+  useEffect( ()=>{
+    getToken(); 
+  })
+
   useEffect( () =>{
-    if(authpass == true)
+    if(authpass == true  && username != "" )
     {
       login();
-      setAuthpass(false)
+      setAuthpass(false);
     }
   })
 
@@ -58,12 +63,15 @@ export default function SignInSignUpScreen({ navigation }) {
   
         console.log('SUCCESS');  
 
-        setUsername('yuyx');
-        setPassword('12345678');  
-        setAuthpass(true); 
+        //This is a hard-coding for demo purpose.
+        //Needed to save them to local device so next time user don't need to key-in again.
+        //setUsername('yuyx');
+        //setPassword('12345678');  
+        getToken(); 
+        if(username!="") setAuthpass(true); 
 
-        console.log("Username:", {username});  
-        console.log("Password:", {password});  
+        console.log("Authenticate-Username:", {username});  
+        console.log("Authenticate-Password:", {password});  
 
       } else{
         setAuthpass(false); 
@@ -79,6 +87,27 @@ export default function SignInSignUpScreen({ navigation }) {
     setLoading(false);
   };  
 
+  async function storeToken() {
+    try {
+       await AsyncStorage.setItem("userData", JSON.stringify({username, password}));
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+
+  async function getToken() {
+    try {
+      let userData = await AsyncStorage.getItem("userData");
+      let data = JSON.parse(userData);
+      setUsername(data.username);
+      setPassword(data.password);
+      console.log("AsyncStorage-username:", {username});
+      console.log("AsyncStorage-password:", {password});
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+
   async function login() {
     console.log("---- Login time ----");
     Keyboard.dismiss();
@@ -92,6 +121,9 @@ export default function SignInSignUpScreen({ navigation }) {
       console.log("Success logging in!");
       console.log(response.data.access_token);
       dispatch({ ...logInAction(), payload: response.data.access_token });
+
+      storeToken();
+
       setLoading(false);
       setUsername("");
       setPassword("");

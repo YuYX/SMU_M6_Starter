@@ -39,7 +39,7 @@ export const lightStyles = {
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: "bold", 
     color: "#f55"
   },
   headerTint: "#f55"

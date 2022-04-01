@@ -60,7 +60,7 @@ export default function EditScreen({ navigation, route }) {
     console.log(result);
 
     if (!result.cancelled) {  
-      setBase64image (result.base64);
+      // setBase64image (result.base64);
       dispatch({ ...dispatch(uploadPicAction()), payload: result.uri }); 
     } 
   }  
