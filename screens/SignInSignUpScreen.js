@@ -39,11 +39,14 @@ export default function SignInSignUpScreen({ navigation }) {
   const dispatch = useDispatch();  
 
   useEffect( ()=>{
-    getToken(); 
+    if( authpass == true) 
+    {
+       getToken();    
+    }
   })
 
   useEffect( () =>{
-    if(authpass == true  && username != "" )
+    if(authpass == true  && username != "" && password !="" )
     {
       login();
       setAuthpass(false);
@@ -68,7 +71,7 @@ export default function SignInSignUpScreen({ navigation }) {
         //setUsername('yuyx');
         //setPassword('12345678');  
         getToken(); 
-        if(username!="") setAuthpass(true); 
+        setAuthpass(true); 
 
         console.log("Authenticate-Username:", {username});  
         console.log("Authenticate-Password:", {password});  
